@@ -1,12 +1,15 @@
-import { Pressable, Text } from "react-native";
-import { Link } from "expo-router";
+import { Stack } from "expo-router";
+import { Text, View } from "react-native";
 
 export default function Add() {
   return (
-    <Link href="/" asChild>
-      <Pressable>
-        <Text>Retour</Text>
-      </Pressable>
-    </Link>
+    <View>
+      <Stack.Screen
+        options={{
+          title: 'Ajouter une adresse',
+        }}
+      />
+      <Text>Test</Text>
+    </View>
   );
 }
