@@ -1,5 +1,5 @@
 import { Stack } from "expo-router";
-import { Text, View } from "react-native";
+import { Text, TextInput, View } from "react-native";
 
 export default function Add() {
   return (
@@ -9,7 +9,7 @@ export default function Add() {
           title: 'Ajouter une adresse',
         }}
       />
-      <Text>Test</Text>
+      <TextInput style={{ height: 40 }}>Test</TextInput>
     </View>
   );
 }

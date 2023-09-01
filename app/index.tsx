@@ -1,26 +1,14 @@
 import React, { useCallback, useState } from 'react';
-import { View, Text, FlatList, Button } from 'react-native';
+import { View, FlatList } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
-import { Link } from 'expo-router';
-
-type ItemProps = { id: string, title: string }
+import { Link, Stack } from 'expo-router';
+import { AntDesign } from '@expo/vector-icons';
+import Item from '@components/Item';
+import Divider from '@components/Divider';
 
 SplashScreen.preventAutoHideAsync();
-
-function Item({ id, title}: ItemProps) {
-  return (
-    <View>
-      <Link
-        href={{
-          pathname: "/address/[id]",
-          params: { id, title }
-        }}>
-          {title}
-        </Link>
-    </View>)
-}
 
 export default function App() {
   const [addressList, setAddressList] = useState([
@@ -52,17 +40,24 @@ export default function App() {
   }
 
   return (
-    <SafeAreaProvider onLayout={onLayoutRootView}>
-      <View>
-        <Text style={{ fontFamily: 'Inter-Black', fontSize: 30 }}>Hello</Text>
-        <Link href="/add">Ajouter un contact</Link>
-        <FlatList
-        data={addressList}
-        renderItem={({item}) => <Item id={item.id} title={item.title} />}
-        keyExtractor={item => item.id}
+    <>
+      <Stack.Screen
+        options={{
+          headerRight: () => <Link href="/add"><AntDesign name="plus" size={32} color="white" /></Link>,
+        }}
       />
-      </View>
-    </SafeAreaProvider>
+      <SafeAreaProvider onLayout={onLayoutRootView}>
+        <View>
+          <FlatList
+          data={addressList}
+          renderItem={({item}) => <Item item={item} pathname="/address/[id]" />}
+          keyExtractor={item => item.id}
+          ItemSeparatorComponent={() => <Divider />}
+          ListFooterComponent={() => <Divider />}
+          />
+        </View>
+      </SafeAreaProvider>
+    </>
   );
 }
 
