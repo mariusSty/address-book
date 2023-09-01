@@ -1,16 +1,26 @@
-module.exports = function(api) {
+module.exports = function (api) {
   api.cache(true);
   return {
-    presets: ['babel-preset-expo'],
+    presets: ["babel-preset-expo"],
     plugins: [
-      'expo-router/babel',
+      "expo-router/babel",
       [
-        'module-resolver',
+        "module-resolver",
         {
-          extensions: ['.ios.js', '.android.js', '.ios.jsx', '.android.jsx', '.js', '.jsx', '.json', '.ts', '.tsx'],
-          root: ['.'],
+          extensions: [
+            ".ios.js",
+            ".android.js",
+            ".ios.jsx",
+            ".android.jsx",
+            ".js",
+            ".jsx",
+            ".json",
+            ".ts",
+            ".tsx",
+          ],
+          root: ["."],
           alias: {
-            '@components': './components',
+            "@components": "./components",
           },
         },
       ],

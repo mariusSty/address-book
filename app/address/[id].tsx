@@ -1,8 +1,8 @@
-import { Stack, useLocalSearchParams } from "expo-router"
-import { Text, View } from "react-native"
+import { Stack, useLocalSearchParams } from "expo-router";
+import { Text, View } from "react-native";
 
 export default function Address() {
-  const { id, title } = useLocalSearchParams()
+  const { id, title } = useLocalSearchParams();
 
   return (
     <View>
@@ -14,5 +14,5 @@ export default function Address() {
       <Text>{id}</Text>
       <Text>{title}</Text>
     </View>
-  )
+  );
 }
