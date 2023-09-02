@@ -1,7 +1,7 @@
 import { Link } from "expo-router";
 import { StyleSheet, View } from "react-native";
 
-type ItemProps = { item: { id: string; title: string }; pathname: string };
+type ItemProps = { item: { id: string; name: string }; pathname: string };
 
 export default function Item({ item, pathname }: ItemProps) {
   return (
@@ -13,7 +13,7 @@ export default function Item({ item, pathname }: ItemProps) {
           params: item,
         }}
       >
-        {item.title}
+        {item.name}
       </Link>
     </View>
   );

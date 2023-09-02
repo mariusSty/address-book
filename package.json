@@ -36,10 +36,6 @@
     "prettier": "^3.0.3",
     "typescript": "^5.1.3"
   },
-  "overrides": {
-    "metro": "0.76.0",
-    "metro-resolver": "0.76.0"
-  },
   "eslintConfig": {
     "extends": "universe/native"
   },
