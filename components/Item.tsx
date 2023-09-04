@@ -10,7 +10,7 @@ export default function Item({ item, pathname }: ItemProps) {
         style={styles.itemLink}
         href={{
           pathname,
-          params: item,
+          params: { id: item.id },
         }}
       >
         {item.name}

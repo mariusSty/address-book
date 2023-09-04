@@ -2,34 +2,41 @@ import Divider from "@components/Divider";
 import Item from "@components/Item";
 import { AntDesign } from "@expo/vector-icons";
 import { useFonts } from "expo-font";
-import { Link, Stack } from "expo-router";
+import { Link, Stack, useFocusEffect } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
+import * as SQLite from "expo-sqlite";
 import React, { useCallback, useState } from "react";
 import { View, FlatList, StyleSheet } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
+import { AddressProps } from "./add";
+
 SplashScreen.preventAutoHideAsync();
 
-export type Address = {
-  id: string;
-  name: string;
-};
+const db = SQLite.openDatabase("address-book");
 
 export default function App() {
-  const [addressList, setAddressList] = useState<Address[]>([
-    {
-      id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
-      name: "First Item",
-    },
-    {
-      id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
-      name: "Second Item",
-    },
-    {
-      id: "58694a0f-3da1-471f-bd96-145571e29d72",
-      name: "Third Item",
-    },
-  ]);
+  const [addressList, setAddressList] = useState<AddressProps[]>([]);
+
+  useFocusEffect(() => {
+    db.transaction(
+      (tx) => {
+        tx.executeSql(
+          "CREATE TABLE IF NOT EXISTS addresses (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, streetNumber INT, address TEXT, postCode TEXT, city TEXT, codes TEXT, comments TEXT)"
+        );
+      },
+      (error) => console.log("zes", error)
+    );
+
+    db.transaction((tx) =>
+      tx.executeSql(
+        "SELECT * from addresses",
+        undefined,
+        (_, { rows: { _array } }) => setAddressList(_array)
+      )
+    );
+  });
+
   const [fontsLoaded, fontError] = useFonts({
     "Inter-Black": require("../assets/fonts/Inter-Black.otf"),
   });
