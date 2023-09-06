@@ -1,14 +1,14 @@
-import Button from "@components/Button";
-import TextInput from "@components/TextInput";
-import { Stack, useLocalSearchParams, useRouter } from "expo-router";
-import * as SQLite from "expo-sqlite";
-import { Formik } from "formik";
-import React, { useEffect, useState } from "react";
-import { StyleSheet, View } from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
-import { Actions } from "types";
+import Button from '@components/Button';
+import TextInput from '@components/TextInput';
+import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
+import * as SQLite from 'expo-sqlite';
+import { Formik } from 'formik';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, View } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
+import { Actions } from 'types';
 
-const db = SQLite.openDatabase("address-book");
+const db = SQLite.openDatabase('address-book');
 
 export type AddressProps = {
   id: string;
@@ -24,40 +24,36 @@ export type AddressProps = {
 export default function Add() {
   const router = useRouter();
   const { id } = useLocalSearchParams<{ id: string }>();
-  const [addressDetails, setAddressDetails] = useState<AddressProps | null>(
-    null
-  );
+  const [addressDetails, setAddressDetails] = useState<AddressProps | null>(null);
 
   useEffect(() => {
     if (id) {
       db.transaction((tx) =>
-        tx.executeSql(
-          "SELECT * from addresses WHERE id = ?",
-          [id],
-          (_, { rows: { _array } }) => setAddressDetails(_array[0])
+        tx.executeSql('SELECT * from addresses WHERE id = ?', [id], (_, { rows: { _array } }) =>
+          setAddressDetails(_array[0])
         )
       );
     }
   }, []);
 
-  const handleSubmit = (values: AddressProps) => {
+  const handleSubmit = (values: Partial<AddressProps>) => {
     if (id) {
       db.transaction((tx) => {
         tx.executeSql(
-          "UPDATE addresses SET name = ?, streetNumber = ?, address = ?, postCode = ?, city = ?, codes = ?, comments = ? WHERE id = ?",
+          'UPDATE addresses SET name = ?, streetNumber = ?, address = ?, postCode = ?, city = ?, codes = ?, comments = ? WHERE id = ?',
           [
-            values.name,
-            values.streetNumber,
-            values.address,
-            values.postCode,
-            values.city,
+            values.name || null,
+            values.streetNumber || null,
+            values.address || null,
+            values.postCode || null,
+            values.city || null,
             values.codes || null,
             values.comments || null,
             id,
           ],
           () => {
             router.push({
-              pathname: "/",
+              pathname: '/',
               params: { actionPerformed: Actions.Update },
             });
           }
@@ -66,19 +62,19 @@ export default function Add() {
     } else {
       db.transaction((tx) => {
         tx.executeSql(
-          "INSERT INTO addresses (name, streetNumber, address, postCode, city, codes, comments) values (?, ?, ?, ?, ?, ?, ?)",
+          'INSERT INTO addresses (name, streetNumber, address, postCode, city, codes, comments) values (?, ?, ?, ?, ?, ?, ?)',
           [
-            values.name,
-            values.streetNumber,
-            values.address,
-            values.postCode,
-            values.city,
+            values.name || null,
+            values.streetNumber || null,
+            values.address || null,
+            values.postCode || null,
+            values.city || null,
             values.codes || null,
             values.comments || null,
           ],
           () => {
             router.push({
-              pathname: "/",
+              pathname: '/',
               params: { actionPerformed: Actions.Add },
             });
           }
@@ -91,78 +87,72 @@ export default function Add() {
     <>
       <Stack.Screen
         options={{
-          title: !!id ? "Modifier cette adresse" : "Ajouter une adresse",
+          title: id ? 'Modifier cette adresse' : 'Ajouter une adresse',
         }}
       />
       <Formik
-        initialValues={
-          addressDetails ?? {
-            name: "",
-            streetNumber: "",
-            address: "",
-            postCode: "",
-            city: "",
-            codes: "",
-            comments: "",
-          }
-        }
+        initialValues={{
+          name: addressDetails?.name || '',
+          streetNumber: addressDetails?.streetNumber || '',
+          address: addressDetails?.address || '',
+          postCode: addressDetails?.postCode || '',
+          city: addressDetails?.city || '',
+          codes: addressDetails?.codes || '',
+          comments: addressDetails?.comments || '',
+        }}
         onSubmit={handleSubmit}
-        enableReinitialize
-      >
+        enableReinitialize>
         {({ handleSubmit, handleBlur, handleChange, values }) => (
           <>
             <ScrollView style={styles.container}>
               <View>
                 <TextInput
                   label="Nom"
-                  value={values.name || ""}
-                  handleChange={handleChange("name")}
-                  handleBlur={handleBlur("name")}
+                  value={values.name || ''}
+                  handleChange={handleChange('name')}
+                  handleBlur={handleBlur('name')}
                 />
                 <TextInput
                   label="N°"
-                  value={values.streetNumber.toString() || ""}
-                  handleChange={handleChange("streetNumber")}
-                  handleBlur={handleBlur("streetNumber")}
+                  value={values.streetNumber?.toString() || ''}
+                  handleChange={handleChange('streetNumber')}
+                  handleBlur={handleBlur('streetNumber')}
                   isKeyBoardNumeric
                 />
                 <TextInput
                   label="Adresse"
-                  value={values.address || ""}
-                  handleChange={handleChange("address")}
-                  handleBlur={handleBlur("address")}
+                  value={values.address || ''}
+                  handleChange={handleChange('address')}
+                  handleBlur={handleBlur('address')}
                 />
                 <TextInput
                   label="Code postal"
-                  value={values.postCode || ""}
-                  handleChange={handleChange("postCode")}
-                  handleBlur={handleBlur("postCode")}
+                  value={values.postCode || ''}
+                  handleChange={handleChange('postCode')}
+                  handleBlur={handleBlur('postCode')}
                 />
                 <TextInput
                   label="Ville"
-                  value={values.city || ""}
-                  handleChange={handleChange("city")}
-                  handleBlur={handleBlur("city")}
+                  value={values.city || ''}
+                  handleChange={handleChange('city')}
+                  handleBlur={handleBlur('city')}
                 />
                 <TextInput
                   label="Codes"
-                  value={values.codes || ""}
-                  handleChange={handleChange("codes")}
-                  handleBlur={handleBlur("codes")}
+                  value={values.codes || ''}
+                  handleChange={handleChange('codes')}
+                  handleBlur={handleBlur('codes')}
                 />
                 <TextInput
                   label="Commentaire"
-                  value={values.comments || ""}
-                  handleChange={handleChange("comments")}
-                  handleBlur={handleBlur("comments")}
+                  value={values.comments || ''}
+                  handleChange={handleChange('comments')}
+                  handleBlur={handleBlur('comments')}
                 />
               </View>
             </ScrollView>
             <View style={styles.buttonContainer}>
-              <Button
-                onPress={handleSubmit}
-                title={!!id ? "Modifier" : "Ajouter"}
-              />
+              <Button onPress={handleSubmit} title={id ? 'Modifier' : 'Ajouter'} />
             </View>
           </>
         )}
@@ -182,8 +172,8 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     maxHeight: 80,
     paddingVertical: 10,
   },

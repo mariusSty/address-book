@@ -1,5 +1,5 @@
-import { Link } from "expo-router";
-import { StyleSheet, View } from "react-native";
+import { Link } from 'expo-router';
+import { StyleSheet, View } from 'react-native';
 
 type ItemProps = { item: { id: string; name: string }; pathname: string };
 
@@ -11,8 +11,7 @@ export default function Item({ item, pathname }: ItemProps) {
         href={{
           pathname,
           params: { id: item.id },
-        }}
-      >
+        }}>
         {item.name}
       </Link>
     </View>
@@ -21,5 +20,5 @@ export default function Item({ item, pathname }: ItemProps) {
 
 const styles = StyleSheet.create({
   itemContainer: { flex: 1, paddingVertical: 10 },
-  itemLink: { textAlign: "center", fontSize: 20 },
+  itemLink: { textAlign: 'center', fontSize: 20 },
 });

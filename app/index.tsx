@@ -1,27 +1,22 @@
-import Divider from "@components/Divider";
-import Item from "@components/Item";
-import { AntDesign } from "@expo/vector-icons";
-import { useFonts } from "expo-font";
-import {
-  Link,
-  Stack,
-  useFocusEffect,
-  useLocalSearchParams,
-  useRouter,
-} from "expo-router";
-import * as SplashScreen from "expo-splash-screen";
-import * as SQLite from "expo-sqlite";
-import React, { useCallback, useState } from "react";
-import { View, FlatList, StyleSheet } from "react-native";
-import { SafeAreaProvider } from "react-native-safe-area-context";
-import { RootSiblingParent } from "react-native-root-siblings";
-import Toast from "react-native-root-toast";
-import { AddressProps } from "./add";
-import { Actions, toastMessage } from "types";
+import Divider from '@components/Divider';
+import Item from '@components/Item';
+import { AntDesign } from '@expo/vector-icons';
+import { useFonts } from 'expo-font';
+import { Link, Stack, useFocusEffect, useLocalSearchParams, useRouter } from 'expo-router';
+import * as SplashScreen from 'expo-splash-screen';
+import * as SQLite from 'expo-sqlite';
+import React, { useCallback, useState } from 'react';
+import { FlatList, StyleSheet, View } from 'react-native';
+import { RootSiblingParent } from 'react-native-root-siblings';
+import Toast from 'react-native-root-toast';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { Actions, toastMessage } from 'types';
+
+import { AddressProps } from './add';
 
 SplashScreen.preventAutoHideAsync();
 
-const db = SQLite.openDatabase("address-book");
+const db = SQLite.openDatabase('address-book');
 
 export default function App() {
   const [addressList, setAddressList] = useState<AddressProps[] | null>(null);
@@ -32,28 +27,23 @@ export default function App() {
 
   useFocusEffect(
     React.useCallback(() => {
-      if (!!actionPerformed) {
-        Toast.show(
-          toastMessage.get(actionPerformed) || "Action bien effectuée ",
-          {
-            duration: Toast.durations.LONG,
-          }
-        );
-        router.setParams({ actionPerformed: undefined });
+      if (actionPerformed) {
+        Toast.show(toastMessage.get(actionPerformed) || 'Action bien effectuée ', {
+          duration: Toast.durations.LONG,
+        });
+        router.setParams({ actionPerformed: '' });
       }
 
       if (!addressList || !!actionPerformed) {
         db.transaction((tx) => {
           tx.executeSql(
-            "CREATE TABLE IF NOT EXISTS addresses (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, streetNumber INT, address TEXT, postCode TEXT, city TEXT, codes TEXT, comments TEXT)"
+            'CREATE TABLE IF NOT EXISTS addresses (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, streetNumber INT, address TEXT, postCode TEXT, city TEXT, codes TEXT, comments TEXT)'
           );
         });
 
         db.transaction((tx) =>
-          tx.executeSql(
-            "SELECT * from addresses",
-            undefined,
-            (_, { rows: { _array } }) => setAddressList(_array)
+          tx.executeSql('SELECT * from addresses', undefined, (_, { rows: { _array } }) =>
+            setAddressList(_array)
           )
         );
       }
@@ -61,7 +51,7 @@ export default function App() {
   );
 
   const [fontsLoaded, fontError] = useFonts({
-    "Inter-Black": require("../assets/fonts/Inter-Black.otf"),
+    'Inter-Black': require('../assets/fonts/Inter-Black.otf'),
   });
 
   const onLayoutRootView = useCallback(async () => {
@@ -89,9 +79,7 @@ export default function App() {
         <View style={styles.container}>
           <FlatList
             data={addressList}
-            renderItem={({ item }) => (
-              <Item item={item} pathname="/address/[id]" />
-            )}
+            renderItem={({ item }) => <Item item={item} pathname="/address/[id]" />}
             keyExtractor={(item) => item.id}
             ItemSeparatorComponent={() => <Divider />}
             ListFooterComponent={() => <Divider />}
@@ -104,7 +92,7 @@ export default function App() {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "white",
+    backgroundColor: 'white',
     flex: 1,
   },
 });

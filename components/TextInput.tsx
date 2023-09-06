@@ -1,5 +1,5 @@
-import React from "react";
-import { Text, TextInput as RNTextInput, StyleSheet } from "react-native";
+import React from 'react';
+import { Text, TextInput as RNTextInput, StyleSheet } from 'react-native';
 
 type TextInputProps = {
   value: string;
@@ -24,7 +24,7 @@ export default function TextInput({
         onChangeText={handleChange}
         onBlur={handleBlur}
         style={styles.textInput}
-        keyboardType={isKeyBoardNumeric ? "numeric" : "default"}
+        keyboardType={isKeyBoardNumeric ? 'numeric' : 'default'}
       />
     </>
   );

@@ -1,41 +1,38 @@
-import Button from "@components/Button";
-import Divider from "@components/Divider";
-import { FontAwesome5 } from "@expo/vector-icons";
-import { Link, Stack, useLocalSearchParams, useRouter } from "expo-router";
-import * as SQLite from "expo-sqlite";
-import React, { useEffect, useState } from "react";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import Button from '@components/Button';
+import Divider from '@components/Divider';
+import { FontAwesome5 } from '@expo/vector-icons';
+import { Link, Stack, useLocalSearchParams, useRouter } from 'expo-router';
+import * as SQLite from 'expo-sqlite';
+import React, { useEffect, useState } from 'react';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 
-const db = SQLite.openDatabase("address-book");
+const db = SQLite.openDatabase('address-book');
 
 export default function AddressDetails() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const router = useRouter();
 
   const [addressDetails, setAddressDetails] = useState({
-    name: "",
-    streetNumber: "",
-    address: "",
-    postCode: "",
-    city: "",
-    codes: "",
-    comments: "",
+    name: '',
+    streetNumber: '',
+    address: '',
+    postCode: '',
+    city: '',
+    codes: '',
+    comments: '',
   });
 
   useEffect(() => {
     if (id) {
       db.transaction((tx) =>
-        tx.executeSql(
-          "SELECT * from addresses WHERE id = ?",
-          [id],
-          (_, { rows: { _array } }) => setAddressDetails(_array[0])
+        tx.executeSql('SELECT * from addresses WHERE id = ?', [id], (_, { rows: { _array } }) =>
+          setAddressDetails(_array[0])
         )
       );
     }
   }, []);
 
-  const { name, streetNumber, address, postCode, city, codes, comments } =
-    addressDetails;
+  const { name, streetNumber, address, postCode, city, codes, comments } = addressDetails;
 
   const handleDelete = () => {
     if (!id) return;
@@ -43,8 +40,8 @@ export default function AddressDetails() {
       (tx) => {
         tx.executeSql(`DELETE FROM addresses WHERE id = ?;`, [id]);
       },
-      (_, error) => console.log("error", error),
-      () => router.push("/")
+      undefined,
+      () => router.push('/')
     );
   };
 
@@ -54,7 +51,7 @@ export default function AddressDetails() {
         options={{
           title: name || "Carnet d'adresse",
           headerRight: () => (
-            <Link href={{ pathname: "/add", params: { id } }}>
+            <Link href={{ pathname: '/add', params: { id } }}>
               <FontAwesome5 name="pen" size={18} color="white" />
             </Link>
           ),
@@ -102,19 +99,19 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     maxHeight: 80,
     paddingVertical: 10,
   },
   category: { marginBottom: 20 },
   title: {
     fontSize: 24,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
   subtitle: {
     fontSize: 20,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
   content: {
     fontSize: 18,
