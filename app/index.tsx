@@ -2,40 +2,63 @@ import Divider from "@components/Divider";
 import Item from "@components/Item";
 import { AntDesign } from "@expo/vector-icons";
 import { useFonts } from "expo-font";
-import { Link, Stack, useFocusEffect } from "expo-router";
+import {
+  Link,
+  Stack,
+  useFocusEffect,
+  useLocalSearchParams,
+  useRouter,
+} from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import * as SQLite from "expo-sqlite";
 import React, { useCallback, useState } from "react";
 import { View, FlatList, StyleSheet } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-
+import { RootSiblingParent } from "react-native-root-siblings";
+import Toast from "react-native-root-toast";
 import { AddressProps } from "./add";
+import { Actions, toastMessage } from "types";
 
 SplashScreen.preventAutoHideAsync();
 
 const db = SQLite.openDatabase("address-book");
 
 export default function App() {
-  const [addressList, setAddressList] = useState<AddressProps[]>([]);
+  const [addressList, setAddressList] = useState<AddressProps[] | null>(null);
+  const { actionPerformed } = useLocalSearchParams<{
+    actionPerformed: Actions;
+  }>();
+  const router = useRouter();
 
-  useFocusEffect(() => {
-    db.transaction(
-      (tx) => {
-        tx.executeSql(
-          "CREATE TABLE IF NOT EXISTS addresses (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, streetNumber INT, address TEXT, postCode TEXT, city TEXT, codes TEXT, comments TEXT)"
+  useFocusEffect(
+    React.useCallback(() => {
+      if (!!actionPerformed) {
+        Toast.show(
+          toastMessage.get(actionPerformed) || "Action bien effectuée ",
+          {
+            duration: Toast.durations.LONG,
+          }
         );
-      },
-      (error) => console.log("zes", error)
-    );
+        router.setParams({ actionPerformed: undefined });
+      }
 
-    db.transaction((tx) =>
-      tx.executeSql(
-        "SELECT * from addresses",
-        undefined,
-        (_, { rows: { _array } }) => setAddressList(_array)
-      )
-    );
-  });
+      if (!addressList || !!actionPerformed) {
+        db.transaction((tx) => {
+          tx.executeSql(
+            "CREATE TABLE IF NOT EXISTS addresses (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, streetNumber INT, address TEXT, postCode TEXT, city TEXT, codes TEXT, comments TEXT)"
+          );
+        });
+
+        db.transaction((tx) =>
+          tx.executeSql(
+            "SELECT * from addresses",
+            undefined,
+            (_, { rows: { _array } }) => setAddressList(_array)
+          )
+        );
+      }
+    }, [router])
+  );
 
   const [fontsLoaded, fontError] = useFonts({
     "Inter-Black": require("../assets/fonts/Inter-Black.otf"),
@@ -52,7 +75,7 @@ export default function App() {
   }
 
   return (
-    <>
+    <RootSiblingParent>
       <Stack.Screen
         options={{
           headerRight: () => (
@@ -75,7 +98,7 @@ export default function App() {
           />
         </View>
       </SafeAreaProvider>
-    </>
+    </RootSiblingParent>
   );
 }
 

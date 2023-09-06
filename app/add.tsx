@@ -6,6 +6,7 @@ import { Formik } from "formik";
 import React, { useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
+import { Actions } from "types";
 
 const db = SQLite.openDatabase("address-book");
 
@@ -41,7 +42,6 @@ export default function Add() {
 
   const handleSubmit = (values: AddressProps) => {
     if (id) {
-      console.log("update", id);
       db.transaction((tx) => {
         tx.executeSql(
           "UPDATE addresses SET name = ?, streetNumber = ?, address = ?, postCode = ?, city = ?, codes = ?, comments = ? WHERE id = ?",
@@ -55,12 +55,15 @@ export default function Add() {
             values.comments || null,
             id,
           ],
-          () => router.back(),
-          (_, error) => console.log(error)
+          () => {
+            router.push({
+              pathname: "/",
+              params: { actionPerformed: Actions.Update },
+            });
+          }
         );
       });
     } else {
-      console.log("add", values);
       db.transaction((tx) => {
         tx.executeSql(
           "INSERT INTO addresses (name, streetNumber, address, postCode, city, codes, comments) values (?, ?, ?, ?, ?, ?, ?)",
@@ -73,8 +76,12 @@ export default function Add() {
             values.codes || null,
             values.comments || null,
           ],
-          () => router.push("/"),
-          (_, error) => console.log(error)
+          () => {
+            router.push({
+              pathname: "/",
+              params: { actionPerformed: Actions.Add },
+            });
+          }
         );
       });
     }
