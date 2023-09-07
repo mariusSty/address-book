@@ -1,12 +1,12 @@
 import Button from '@components/Button';
 import Divider from '@components/Divider';
-import { FontAwesome5 } from '@expo/vector-icons';
+import Text from '@components/Text';
+import { FontAwesome5, Ionicons } from '@expo/vector-icons';
 import { Link, Stack, useLocalSearchParams, useRouter } from 'expo-router';
 import * as SQLite from 'expo-sqlite';
 import React, { useEffect, useState } from 'react';
-import { Modal, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Modal, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { Actions } from 'types';
-
 const db = SQLite.openDatabase('address-book');
 
 export default function AddressDetails() {
@@ -64,34 +64,48 @@ export default function AddressDetails() {
               <FontAwesome5 name="pen" size={18} color="white" />
             </Link>
           ),
+          headerLeft: () => (
+            <Pressable onPress={() => router.back()} style={styles.headerLeftIcon}>
+              <FontAwesome5 name="chevron-left" size={26} color="white" />
+            </Pressable>
+          ),
         }}
       />
       <ScrollView style={styles.container}>
         <View style={styles.category}>
-          <Text style={styles.title}>{name}</Text>
+          <View style={styles.nameCategory}>
+            <Ionicons name="person" size={30} color="#fafafa" />
+            <Text style={styles.title} text={name} fontSize={28} />
+          </View>
         </View>
         <View style={styles.category}>
-          <Text style={styles.subtitle}>Adresse</Text>
-          <Divider marginBottom={10} />
-          <Text style={styles.content}>
-            {streetNumber} {address}
-          </Text>
-          <Text style={styles.content}>
-            {postCode} {city}
-          </Text>
+          <Divider marginBottom={20} />
+          <View style={styles.subtitle}>
+            <FontAwesome5 name="map" size={24} color="#fafafa" />
+            <Text text="Adresse" fontSize={16} />
+          </View>
+          <Text style={styles.content} text={streetNumber + ' ' + address} />
+          <Text style={styles.content} text={postCode + ' ' + city} />
         </View>
         <View style={styles.category}>
-          <Text style={styles.subtitle}>Codes</Text>
-          <Divider marginBottom={10} />
-          <Text style={styles.content}>{codes}</Text>
+          <Divider marginBottom={20} />
+          <View style={styles.subtitle}>
+            <FontAwesome5 name="lock" size={20} color="#fafafa" />
+            <Text text="Codes" fontSize={16} />
+          </View>
+          <Text style={styles.content} text={codes} />
         </View>
         <View style={styles.category}>
-          <Text style={styles.subtitle}>Commentaire</Text>
-          <Divider marginBottom={10} />
-          <Text style={styles.content}>{comments}</Text>
+          <Divider marginBottom={20} />
+          <View style={styles.subtitle}>
+            <FontAwesome5 name="pen" size={20} color="#fafafa" />
+            <Text text="Commentaire" fontSize={16} />
+          </View>
+          <Text style={styles.content} text={comments} />
         </View>
 
-        <Button onPress={handleDelete} title="Supprimer" />
+        <Divider marginBottom={20} />
+        <Button onPress={handleDelete} title="Supprimer" color="#DC143C" />
       </ScrollView>
       <View style={styles.buttonContainer}>
         <Button title="Se rendre à cette adresse" />
@@ -99,18 +113,20 @@ export default function AddressDetails() {
       <Modal animationType="fade" visible={isModalVisible} transparent>
         <Pressable onPress={handleCancel} style={styles.modalContainer}>
           <Pressable onPress={null} style={styles.modalContent}>
-            <Text style={styles.confirmText}>
-              Voulez-vous vraiment supprimer définitivement cette adresse ?
-            </Text>
+            <Text
+              style={styles.confirmText}
+              text="Voulez-vous vraiment supprimer définitivement cette adresse ?
+            "
+            />
             <View style={styles.modalButtonContainer}>
               <View style={styles.confirmViewButton}>
                 <Pressable onPress={handleConfirmDelete} style={styles.confirmButton}>
-                  <Text style={styles.textButton}>Confirmer</Text>
+                  <Text style={styles.textButton} text="Confirmer" fontSize={16} />
                 </Pressable>
               </View>
               <View style={styles.cancelViewButton}>
                 <Pressable onPress={handleCancel} style={styles.cancelButton}>
-                  <Text style={styles.textButton}>Annuler</Text>
+                  <Text style={styles.textButton} text="Annuler" fontSize={16} />
                 </Pressable>
               </View>
             </View>
@@ -129,7 +145,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 32,
     borderBottomRightRadius: 20,
     elevation: 3,
-    backgroundColor: 'red',
+    backgroundColor: '#DC143C',
   },
   cancelViewButton: {
     flex: 1,
@@ -139,6 +155,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 20,
     paddingTop: 40,
+    backgroundColor: '#00002b',
   },
   confirmButton: {
     alignItems: 'center',
@@ -147,11 +164,16 @@ const styles = StyleSheet.create({
     paddingHorizontal: 32,
     borderBottomLeftRadius: 20,
     elevation: 3,
-    backgroundColor: 'green',
+    backgroundColor: '#00693E',
   },
   confirmViewButton: {
     flex: 1,
     borderBottomLeftRadius: 20,
+  },
+  nameCategory: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
   },
   confirmText: {
     paddingHorizontal: 20,
@@ -164,11 +186,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     maxHeight: 80,
     paddingVertical: 10,
+    backgroundColor: '#1e1e59',
   },
   modalButtonContainer: {
     flexDirection: 'row',
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
+  },
+  headerLeftIcon: {
+    marginRight: 20,
   },
   modalContainer: {
     flex: 1,
@@ -176,18 +202,21 @@ const styles = StyleSheet.create({
     paddingHorizontal: 40,
   },
   modalContent: {
+    backgroundColor: '#1e1e59',
+    elevation: 10,
+    shadowColor: '#fafafa',
     borderRadius: 20,
-    backgroundColor: 'grey',
     paddingTop: 20,
   },
-  category: { marginBottom: 60 },
+  category: { marginBottom: 20 },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
   },
   subtitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
+    flexDirection: 'row',
+    gap: 8,
+    marginBottom: 5,
   },
   content: {
     fontSize: 18,

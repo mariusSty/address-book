@@ -5,14 +5,15 @@ export default function Layout() {
     <Stack
       screenOptions={{
         headerStyle: {
-          backgroundColor: '#5634d9',
+          backgroundColor: '#1e1e59',
         },
-        headerTitleAlign: 'center',
-        headerTintColor: '#fff',
+        headerTitleAlign: 'left',
+        headerTintColor: '#fafafa',
         headerTitleStyle: {
           fontWeight: 'bold',
+          fontSize: 26,
         },
-        title: "Carnet d'adresse",
+        title: 'Mes adresses',
       }}
     />
   );

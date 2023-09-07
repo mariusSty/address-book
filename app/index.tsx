@@ -1,6 +1,6 @@
 import Divider from '@components/Divider';
 import Item from '@components/Item';
-import { AntDesign } from '@expo/vector-icons';
+import { FontAwesome, FontAwesome5 } from '@expo/vector-icons';
 import { useFonts } from 'expo-font';
 import { Link, Stack, useFocusEffect, useLocalSearchParams, useRouter } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
@@ -30,6 +30,8 @@ export default function App() {
       if (actionPerformed) {
         Toast.show(toastMessage.get(actionPerformed) || 'Action bien effectuée ', {
           duration: Toast.durations.LONG,
+          backgroundColor: '#f2f2f2',
+          textColor: '#1e1e59',
         });
         router.setParams({ actionPerformed: '' });
       }
@@ -70,8 +72,13 @@ export default function App() {
         options={{
           headerRight: () => (
             <Link href="/add">
-              <AntDesign name="plus" size={32} color="white" />
+              <FontAwesome name="plus" size={28} color="#fafafa" />
             </Link>
+          ),
+          headerLeft: () => (
+            <View style={styles.headerLeftIcon}>
+              <FontAwesome5 name="house-user" size={30} color="#fafafa" />
+            </View>
           ),
         }}
       />
@@ -92,7 +99,10 @@ export default function App() {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'white',
     flex: 1,
+    backgroundColor: '#00002b',
+  },
+  headerLeftIcon: {
+    marginRight: 20,
   },
 });

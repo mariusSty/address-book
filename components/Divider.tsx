@@ -6,5 +6,11 @@ export default function Divider({ height = 1, marginBottom = 0 }) {
 
 const styles = (height: number, marginBottom: number) =>
   StyleSheet.create({
-    divider: { height, backgroundColor: 'grey', marginBottom },
+    divider: {
+      height,
+      backgroundColor: '#fafafa',
+      marginBottom,
+      shadowColor: '#fafafa',
+      elevation: 10,
+    },
   });
