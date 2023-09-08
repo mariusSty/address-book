@@ -11,6 +11,8 @@ type TextInputProps = {
   handleChange: any;
   clearField: any;
   isKeyBoardNumeric?: boolean;
+  multiline?: boolean;
+  error?: string;
 };
 
 export default function TextInput({
@@ -20,12 +22,17 @@ export default function TextInput({
   handleChange,
   clearField,
   isKeyBoardNumeric = false,
+  multiline = false,
+  error = '',
 }: TextInputProps) {
   const handleClear = () => clearField();
 
   return (
     <View style={styles.textInputContainer}>
-      <Text text={label} fontSize={16} style={styles.textInputLabel} />
+      <View style={styles.textInputLabelContainer}>
+        <Text text={label} fontSize={16} style={styles.textInputLabel} />
+        <Text text={error} fontSize={12} style={styles.error} />
+      </View>
       <View style={styles.textInputField}>
         <RNTextInput
           value={value}
@@ -33,6 +40,8 @@ export default function TextInput({
           onBlur={handleBlur}
           style={styles.textInput}
           keyboardType={isKeyBoardNumeric ? 'numeric' : 'default'}
+          multiline={multiline}
+          cursorColor="#fafafa"
         />
         {!!value && (
           <Pressable onPress={handleClear} style={styles.textInputButton}>
@@ -45,6 +54,9 @@ export default function TextInput({
 }
 
 const styles = StyleSheet.create({
+  error: {
+    color: '#DC143C',
+  },
   textInput: {
     backgroundColor: '#1e1e59',
     borderColor: '#f2f2f2',
@@ -69,5 +81,10 @@ const styles = StyleSheet.create({
   },
   textInputLabel: {
     marginLeft: 8,
+  },
+  textInputLabelContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 15,
   },
 });

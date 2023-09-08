@@ -8,7 +8,18 @@ import React, { useEffect, useState } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Actions } from 'types';
+import * as Yup from 'yup';
 
+const SignupSchema = Yup.object().shape({
+  name: Yup.string()
+    .min(2, 'Minimum 2 caractères')
+    .max(50, 'Maximum 50 caractères')
+    .required('Champ requis'),
+  streetNumber: Yup.number().required('Champ requis'),
+  address: Yup.string().required('Champ requis'),
+  postCode: Yup.string().required('Champ requis'),
+  city: Yup.string().required('Champ requis'),
+});
 const db = SQLite.openDatabase('address-book');
 
 export type AddressProps = {
@@ -106,9 +117,10 @@ export default function Add() {
           codes: addressDetails?.codes || '',
           comments: addressDetails?.comments || '',
         }}
+        validationSchema={SignupSchema}
         onSubmit={handleSubmit}
         enableReinitialize>
-        {({ handleSubmit, handleBlur, handleChange, values, setFieldValue }) => (
+        {({ handleSubmit, handleBlur, handleChange, values, setFieldValue, errors, touched }) => (
           <>
             <ScrollView style={styles.scrollContainer}>
               <View style={styles.container}>
@@ -118,6 +130,7 @@ export default function Add() {
                   handleChange={handleChange('name')}
                   handleBlur={handleBlur('name')}
                   clearField={() => setFieldValue('name', '')}
+                  error={errors.name && touched.name ? errors.name : undefined}
                 />
                 <TextInput
                   label="N°"
@@ -126,6 +139,9 @@ export default function Add() {
                   handleBlur={handleBlur('streetNumber')}
                   isKeyBoardNumeric
                   clearField={() => setFieldValue('streetNumber', '')}
+                  error={
+                    errors.streetNumber && touched.streetNumber ? errors.streetNumber : undefined
+                  }
                 />
                 <TextInput
                   label="Adresse"
@@ -133,6 +149,7 @@ export default function Add() {
                   handleChange={handleChange('address')}
                   handleBlur={handleBlur('address')}
                   clearField={() => setFieldValue('address', '')}
+                  error={errors.address && touched.address ? errors.address : undefined}
                 />
                 <TextInput
                   label="Code postal"
@@ -140,6 +157,7 @@ export default function Add() {
                   handleChange={handleChange('postCode')}
                   handleBlur={handleBlur('postCode')}
                   clearField={() => setFieldValue('postCode', '')}
+                  error={errors.postCode && touched.postCode ? errors.postCode : undefined}
                 />
                 <TextInput
                   label="Ville"
@@ -147,6 +165,7 @@ export default function Add() {
                   handleChange={handleChange('city')}
                   handleBlur={handleBlur('city')}
                   clearField={() => setFieldValue('city', '')}
+                  error={errors.city && touched.city ? errors.city : undefined}
                 />
                 <TextInput
                   label="Codes"
@@ -154,6 +173,7 @@ export default function Add() {
                   handleChange={handleChange('codes')}
                   handleBlur={handleBlur('codes')}
                   clearField={() => setFieldValue('codes', '')}
+                  multiline
                 />
                 <TextInput
                   label="Commentaire"
@@ -161,6 +181,7 @@ export default function Add() {
                   handleChange={handleChange('comments')}
                   handleBlur={handleBlur('comments')}
                   clearField={() => setFieldValue('comments', '')}
+                  multiline
                 />
               </View>
             </ScrollView>

@@ -1,15 +1,16 @@
 import React from 'react';
-import { Pressable, StyleSheet, Text } from 'react-native';
+import { Pressable, StyleSheet, Text, ViewStyle } from 'react-native';
 
 type ButtonProps = {
   title: string;
   color?: string;
+  style?: ViewStyle;
   onPress?: () => any;
 };
 
-export default function Button({ onPress, color, title }: ButtonProps) {
+export default function Button({ onPress, color, title, style }: ButtonProps) {
   return (
-    <Pressable style={({ pressed }) => styles(pressed, color).button} onPress={onPress}>
+    <Pressable style={({ pressed }) => [styles(pressed, color).button, style]} onPress={onPress}>
       <Text style={styles().text}>{title}</Text>
     </Pressable>
   );

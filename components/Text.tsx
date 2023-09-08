@@ -7,7 +7,7 @@ type TextProps = {
 };
 
 export default function Text({ text, fontSize, style }: TextProps) {
-  return <RNText style={[style, styles(fontSize).text]}>{text}</RNText>;
+  return <RNText style={[styles(fontSize).text, style]}>{text}</RNText>;
 }
 
 const styles = (fontSize = 20) =>

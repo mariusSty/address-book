@@ -122,14 +122,14 @@ export default function AddressDetails() {
             />
             <View style={styles.modalButtonContainer}>
               <View style={styles.confirmViewButton}>
-                <Pressable onPress={handleConfirmDelete} style={styles.confirmButton}>
-                  <Text style={styles.textButton} text="Confirmer" fontSize={16} />
-                </Pressable>
+                <Button
+                  title="Confirmer"
+                  onPress={handleConfirmDelete}
+                  style={styles.confirmButton}
+                />
               </View>
               <View style={styles.cancelViewButton}>
-                <Pressable onPress={handleCancel} style={styles.cancelButton}>
-                  <Text style={styles.textButton} text="Annuler" fontSize={16} />
-                </Pressable>
+                <Button title="Annuler" onPress={handleCancel} style={styles.cancelButton} />
               </View>
             </View>
           </Pressable>
@@ -141,12 +141,9 @@ export default function AddressDetails() {
 
 const styles = StyleSheet.create({
   cancelButton: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 12,
-    paddingHorizontal: 32,
-    borderBottomRightRadius: 20,
-    elevation: 3,
+    borderTopLeftRadius: 0,
+    borderTopRightRadius: 0,
+    borderBottomLeftRadius: 0,
     backgroundColor: '#DC143C',
   },
   cancelViewButton: {
@@ -163,12 +160,9 @@ const styles = StyleSheet.create({
     paddingVertical: 40,
   },
   confirmButton: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 12,
-    paddingHorizontal: 32,
-    borderBottomLeftRadius: 20,
-    elevation: 3,
+    borderTopLeftRadius: 0,
+    borderTopRightRadius: 0,
+    borderBottomRightRadius: 0,
     backgroundColor: '#00693E',
   },
   confirmViewButton: {
