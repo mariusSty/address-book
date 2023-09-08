@@ -1,10 +1,11 @@
 import Button from '@components/Button';
 import TextInput from '@components/TextInput';
+import { FontAwesome5 } from '@expo/vector-icons';
 import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
 import * as SQLite from 'expo-sqlite';
 import { Formik } from 'formik';
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Actions } from 'types';
 
@@ -88,6 +89,11 @@ export default function Add() {
       <Stack.Screen
         options={{
           title: id ? 'Modifier cette adresse' : 'Ajouter une adresse',
+          headerLeft: () => (
+            <Pressable onPress={() => router.back()} style={styles.headerLeftIcon}>
+              <FontAwesome5 name="chevron-left" size={26} color="white" />
+            </Pressable>
+          ),
         }}
       />
       <Formik
@@ -102,15 +108,16 @@ export default function Add() {
         }}
         onSubmit={handleSubmit}
         enableReinitialize>
-        {({ handleSubmit, handleBlur, handleChange, values }) => (
+        {({ handleSubmit, handleBlur, handleChange, values, setFieldValue }) => (
           <>
-            <ScrollView style={styles.container}>
-              <View>
+            <ScrollView style={styles.scrollContainer}>
+              <View style={styles.container}>
                 <TextInput
                   label="Nom"
                   value={values.name || ''}
                   handleChange={handleChange('name')}
                   handleBlur={handleBlur('name')}
+                  clearField={() => setFieldValue('name', '')}
                 />
                 <TextInput
                   label="N°"
@@ -118,36 +125,42 @@ export default function Add() {
                   handleChange={handleChange('streetNumber')}
                   handleBlur={handleBlur('streetNumber')}
                   isKeyBoardNumeric
+                  clearField={() => setFieldValue('streetNumber', '')}
                 />
                 <TextInput
                   label="Adresse"
                   value={values.address || ''}
                   handleChange={handleChange('address')}
                   handleBlur={handleBlur('address')}
+                  clearField={() => setFieldValue('address', '')}
                 />
                 <TextInput
                   label="Code postal"
                   value={values.postCode || ''}
                   handleChange={handleChange('postCode')}
                   handleBlur={handleBlur('postCode')}
+                  clearField={() => setFieldValue('postCode', '')}
                 />
                 <TextInput
                   label="Ville"
                   value={values.city || ''}
                   handleChange={handleChange('city')}
                   handleBlur={handleBlur('city')}
+                  clearField={() => setFieldValue('city', '')}
                 />
                 <TextInput
                   label="Codes"
                   value={values.codes || ''}
                   handleChange={handleChange('codes')}
                   handleBlur={handleBlur('codes')}
+                  clearField={() => setFieldValue('codes', '')}
                 />
                 <TextInput
                   label="Commentaire"
                   value={values.comments || ''}
                   handleChange={handleChange('comments')}
                   handleBlur={handleBlur('comments')}
+                  clearField={() => setFieldValue('comments', '')}
                 />
               </View>
             </ScrollView>
@@ -162,19 +175,33 @@ export default function Add() {
 }
 
 const styles = StyleSheet.create({
+  buttonContainer: {
+    alignItems: 'center',
+    backgroundColor: '#1e1e59',
+    borderTopColor: '#f2f2f2',
+    borderTopWidth: 1,
+    flexGrow: 1,
+    justifyContent: 'center',
+    maxHeight: 80,
+    paddingVertical: 10,
+  },
   container: {
     flex: 1,
-    paddingHorizontal: 20,
+    marginVertical: 20,
+    marginHorizontal: 10,
+  },
+  headerLeftIcon: {
+    marginRight: 20,
   },
   textInput: {
     fontSize: 20,
     borderRadius: 4,
   },
-  buttonContainer: {
+  textInputContainer: {
+    gap: 5,
+  },
+  scrollContainer: {
+    backgroundColor: '#00002b',
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    maxHeight: 80,
-    paddingVertical: 10,
   },
 });

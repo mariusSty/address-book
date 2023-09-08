@@ -71,41 +71,43 @@ export default function AddressDetails() {
           ),
         }}
       />
-      <ScrollView style={styles.container}>
-        <View style={styles.category}>
-          <View style={styles.nameCategory}>
-            <Ionicons name="person" size={30} color="#fafafa" />
-            <Text style={styles.title} text={name} fontSize={28} />
+      <ScrollView style={styles.scrollContainer}>
+        <View style={styles.container}>
+          <View style={styles.category}>
+            <View style={styles.nameCategory}>
+              <Ionicons name="person" size={30} color="#fafafa" />
+              <Text style={styles.title} text={name} fontSize={28} />
+            </View>
           </View>
-        </View>
-        <View style={styles.category}>
-          <Divider marginBottom={20} />
-          <View style={styles.subtitle}>
-            <FontAwesome5 name="map" size={24} color="#fafafa" />
-            <Text text="Adresse" fontSize={16} />
+          <View style={styles.category}>
+            <Divider marginBottom={20} />
+            <View style={styles.subtitle}>
+              <FontAwesome5 name="map" size={24} color="#fafafa" />
+              <Text text="Adresse" fontSize={16} />
+            </View>
+            <Text style={styles.content} text={streetNumber + ' ' + address} />
+            <Text style={styles.content} text={postCode + ' ' + city} />
           </View>
-          <Text style={styles.content} text={streetNumber + ' ' + address} />
-          <Text style={styles.content} text={postCode + ' ' + city} />
-        </View>
-        <View style={styles.category}>
-          <Divider marginBottom={20} />
-          <View style={styles.subtitle}>
-            <FontAwesome5 name="lock" size={20} color="#fafafa" />
-            <Text text="Codes" fontSize={16} />
+          <View style={styles.category}>
+            <Divider marginBottom={20} />
+            <View style={styles.subtitle}>
+              <FontAwesome5 name="lock" size={20} color="#fafafa" />
+              <Text text="Codes" fontSize={16} />
+            </View>
+            <Text style={styles.content} text={codes} />
           </View>
-          <Text style={styles.content} text={codes} />
-        </View>
-        <View style={styles.category}>
-          <Divider marginBottom={20} />
-          <View style={styles.subtitle}>
-            <FontAwesome5 name="pen" size={20} color="#fafafa" />
-            <Text text="Commentaire" fontSize={16} />
+          <View style={styles.category}>
+            <Divider marginBottom={20} />
+            <View style={styles.subtitle}>
+              <FontAwesome5 name="pen" size={20} color="#fafafa" />
+              <Text text="Commentaire" fontSize={16} />
+            </View>
+            <Text style={styles.content} text={comments} />
           </View>
-          <Text style={styles.content} text={comments} />
-        </View>
 
-        <Divider marginBottom={20} />
-        <Button onPress={handleDelete} title="Supprimer" color="#DC143C" />
+          <Divider marginBottom={20} />
+          <Button onPress={handleDelete} title="Supprimer" color="#DC143C" />
+        </View>
       </ScrollView>
       <View style={styles.buttonContainer}>
         <Button title="Se rendre à cette adresse" />
@@ -151,11 +153,14 @@ const styles = StyleSheet.create({
     flex: 1,
     borderBottomRightRadius: 20,
   },
+  scrollContainer: {
+    flex: 1,
+    backgroundColor: '#00002b',
+  },
   container: {
     flex: 1,
     paddingHorizontal: 20,
-    paddingTop: 40,
-    backgroundColor: '#00002b',
+    paddingVertical: 40,
   },
   confirmButton: {
     alignItems: 'center',
@@ -181,12 +186,13 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   buttonContainer: {
+    alignItems: 'center',
+    backgroundColor: '#1e1e59',
+    borderTopColor: '#f2f2f2',
+    borderTopWidth: 1,
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
     maxHeight: 80,
-    paddingVertical: 10,
-    backgroundColor: '#1e1e59',
   },
   modalButtonContainer: {
     flexDirection: 'row',

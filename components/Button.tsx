@@ -9,13 +9,13 @@ type ButtonProps = {
 
 export default function Button({ onPress, color, title }: ButtonProps) {
   return (
-    <Pressable style={styles(color).button} onPress={onPress}>
+    <Pressable style={({ pressed }) => styles(pressed, color).button} onPress={onPress}>
       <Text style={styles().text}>{title}</Text>
     </Pressable>
   );
 }
 
-const styles = (color?: string) =>
+const styles = (pressed = false, color?: string) =>
   StyleSheet.create({
     button: {
       alignItems: 'center',
@@ -25,6 +25,7 @@ const styles = (color?: string) =>
       borderRadius: 20,
       elevation: 3,
       backgroundColor: color ?? '#ff1377',
+      opacity: pressed ? 0.5 : 1,
     },
     text: {
       fontSize: 16,
