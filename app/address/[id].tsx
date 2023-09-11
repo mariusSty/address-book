@@ -2,6 +2,7 @@ import Button from '@components/Button';
 import Divider from '@components/Divider';
 import Text from '@components/Text';
 import { FontAwesome5, Ionicons } from '@expo/vector-icons';
+import * as Linking from 'expo-linking';
 import { Link, Stack, useLocalSearchParams, useRouter } from 'expo-router';
 import * as SQLite from 'expo-sqlite';
 import React, { useEffect, useState } from 'react';
@@ -52,6 +53,14 @@ export default function AddressDetails() {
 
   const handleDelete = () => {
     setIsModalVisible(true);
+  };
+
+  const handleOpenMap = () => {
+    Linking.openURL(
+      encodeURI(
+        `https://www.google.com/maps/dir/?api=1&origin=&destination=${streetNumber} ${address}`
+      )
+    );
   };
 
   return (
@@ -110,7 +119,7 @@ export default function AddressDetails() {
         </View>
       </ScrollView>
       <View style={styles.buttonContainer}>
-        <Button title="Se rendre à cette adresse" />
+        <Button title="Se rendre à cette adresse" onPress={handleOpenMap} />
       </View>
       <Modal animationType="fade" visible={isModalVisible} transparent>
         <Pressable onPress={handleCancel} style={styles.modalContainer}>
